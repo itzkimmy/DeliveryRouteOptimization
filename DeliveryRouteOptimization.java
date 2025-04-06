@@ -13,8 +13,8 @@ public class DeliveryRouteOptimization {
     // Location names
     static String[] locations = {"Poslaju Warehouse", "Jnt Warehouse", "Maluri Center", "Pudu Center"};
 
-    // Greedy Drop
-    public static String greedyDrop(int[][] dist) {
+    // Greedy DROP
+    public static String greedyDROP(int[][] dist) {
         int n = dist.length;
         boolean[] visited = new boolean[n];
         int current = 0, totalDistance = 0;
@@ -39,8 +39,8 @@ public class DeliveryRouteOptimization {
         return path.toString() + " | Total Cost: " + totalDistance;
     }
 
-    // Dynamic Programming Drop
-    public static String dynamicProgrammingDrop(int[][] dist) {
+    // Dynamic Programming DROP
+    public static String dynamicProgrammingDROP(int[][] dist) {
         int n = dist.length;
         int VISITED_ALL = (1 << n) - 1;
         int[][] memo = new int[n][1 << n];
@@ -48,7 +48,7 @@ public class DeliveryRouteOptimization {
         for (int[] row : memo) Arrays.fill(row, -1);
         for (String[] row : paths) Arrays.fill(row, null);
         
-        int minCost = dynamicProgrammingDropHelper(0, 1, dist, memo, VISITED_ALL, paths);
+        int minCost = dynamicProgrammingDROPHelper(0, 1, dist, memo, VISITED_ALL, paths);
         StringBuilder path = new StringBuilder(locations[0]);
         int pos = 0, mask = 1;
         
@@ -69,7 +69,7 @@ public class DeliveryRouteOptimization {
         return path.toString() + " | Total Cost: " + minCost;
     }
 
-    private static int dynamicProgrammingDropHelper(int pos, int mask, int[][] dist, int[][] memo, int VISITED_ALL, String[][] paths) {
+    private static int dynamicProgrammingDROPHelper(int pos, int mask, int[][] dist, int[][] memo, int VISITED_ALL, String[][] paths) {
         if (mask == VISITED_ALL) {
             return dist[pos][0];
         }
@@ -82,7 +82,7 @@ public class DeliveryRouteOptimization {
         
         for (int i = 0; i < dist.length; i++) {
             if ((mask & (1 << i)) == 0) {
-                int newCost = dist[pos][i] + dynamicProgrammingDropHelper(i, mask | (1 << i), dist, memo, VISITED_ALL, paths);
+                int newCost = dist[pos][i] + dynamicProgrammingDROPHelper(i, mask | (1 << i), dist, memo, VISITED_ALL, paths);
                 if (newCost < minCost) {
                     minCost = newCost;
                     nextLocation = locations[i];
@@ -95,8 +95,8 @@ public class DeliveryRouteOptimization {
         return minCost;
     }
 
-    // Backtracking Drop
-    public static String backtrackingDrop(int[][] dist) {
+    // Backtracking DROP
+    public static String backtrackingDROP(int[][] dist) {
         int n = dist.length;
         boolean[] visited = new boolean[n];
         visited[0] = true;
@@ -104,11 +104,11 @@ public class DeliveryRouteOptimization {
         int[] minCost = {Integer.MAX_VALUE};
         StringBuilder bestPath = new StringBuilder();
         
-        DropBacktracking(0, dist, visited, n, 1, 0, path, minCost, bestPath);
+        DROPBacktracking(0, dist, visited, n, 1, 0, path, minCost, bestPath);
         return bestPath.toString() + " | Total Cost: " + minCost[0];
     }
 
-    private static void DropBacktracking(int pos, int[][] dist, boolean[] visited, int n, int count, int cost, StringBuilder path, int[] minCost, StringBuilder bestPath) {
+    private static void DROPBacktracking(int pos, int[][] dist, boolean[] visited, int n, int count, int cost, StringBuilder path, int[] minCost, StringBuilder bestPath) {
         if (count == n && dist[pos][0] > 0) {
             int totalCost = cost + dist[pos][0];
             if (totalCost < minCost[0]) {
@@ -123,15 +123,15 @@ public class DeliveryRouteOptimization {
             if (!visited[i] && dist[pos][i] > 0) {
                 visited[i] = true;
                 path.append(" -> ").append(locations[i]);
-                DropBacktracking(i, dist, visited, n, count + 1, cost + dist[pos][i], path, minCost, bestPath);
+                DROPBacktracking(i, dist, visited, n, count + 1, cost + dist[pos][i], path, minCost, bestPath);
                 visited[i] = false;
                 path.setLength(path.lastIndexOf(" -> "));
             }
         }
     }
 
-    // Divide and Conquer Drop
-    public static String divideAndConquerDrop(int[][] dist) {
+    // Divide and Conquer DROP
+    public static String divideAndConquerDROP(int[][] dist) {
         int n = dist.length;
         boolean[] visited = new boolean[n];
         visited[0] = true;
@@ -289,17 +289,17 @@ public class DeliveryRouteOptimization {
     public static void main(String[] args) {
         System.out.println("===== Delivery Route Optimization =====\n");
     
-        System.out.println(">> Greedy Drop Solution:");
-        System.out.println(greedyDrop(distanceMatrix) + "\n");
+        System.out.println(">> Greedy DROP Solution:");
+        System.out.println(greedyDROP(distanceMatrix) + "\n");
     
-        System.out.println(">> Dynamic Programming Drop Solution:");
-        System.out.println(dynamicProgrammingDrop(distanceMatrix) + "\n");
+        System.out.println(">> Dynamic Programming DROP Solution:");
+        System.out.println(dynamicProgrammingDROP(distanceMatrix) + "\n");
     
-        System.out.println(">> Backtracking Drop Solution:");
-        System.out.println(backtrackingDrop(distanceMatrix) + "\n");
+        System.out.println(">> Backtracking DROP Solution:");
+        System.out.println(backtrackingDROP(distanceMatrix) + "\n");
     
-        System.out.println(">> Divide and Conquer Drop Solution:");
-        System.out.println(divideAndConquerDrop(distanceMatrix) + "\n");
+        System.out.println(">> Divide and Conquer DROP Solution:");
+        System.out.println(divideAndConquerDROP(distanceMatrix) + "\n");
     
         // Sorting and Searching
         int[] arr = {8, 3, 5, 1, 9, 2};
